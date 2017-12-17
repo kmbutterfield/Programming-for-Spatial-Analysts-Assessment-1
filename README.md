@@ -8,5 +8,5 @@ Following the weekly practicals allowed me to produce an agent-based model (ABM)
 * The environment can be altered by the agents as they eat their way around.
 * The agents know that they are not alone in the model and can interact such as being able to share 'data' stores.
 * If an agent is in the way of another, it will move around the environment, and not on top of the other agent.
-* Each agent has a data store capacity of 1000, if it consumes any more data it will become vomit, depositing all of its data stores.
+* Each agent has a data store capacity of 1000, if it consumes any more data it will vomit, depositing all of its data stores.
 * The begaviours of each agent in their environment can be viewed as an animation. If a piece of data has been consumed by an agent, the environment patch will change colour and will have a decreased data store.
