@@ -28,6 +28,7 @@ class Agent ():
         self.agents = agents
         self.store = 0 
         self.neighbourhood = neighbourhood
+
         
 # Moving the agents in the environment; division % constrains the agents within the environment's perimeter. If one or more of the agents are found out of range, it will arrive on the parralel side; this is a known as a torus.
     

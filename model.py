@@ -26,21 +26,21 @@ import csv
 import requests
 import bs4
 
-# Beign to initialise the model using provided x and y data
+
+# Beign to initialise the model using provided x and y data:
 
 r = requests.get('http://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html')
 content = r.text
 soup = bs4.BeautifulSoup(content, 'html.parser')
 td_ys = soup.find_all(attrs={"class" : "y"})
 td_xs = soup.find_all(attrs={"class" : "x"})
-#print(td_ys)
-#print(td_xs)
 
 
 # Pythagoras code for calculating distance between the two agent coordinates:
                 
 def distance_between(agent0, agent1):
     return (((agent0.x-agent1.x)**2)+((agent0.y-agent1.y)**2))**0.5
+
 
 # Creating model lists:
         # First, the environment for the agents to roam around in;
@@ -49,11 +49,12 @@ def distance_between(agent0, agent1):
 environment = []
 agents = []
 
+
 # Defining model parameters such as number of agents, iterations, and neighbourhoods:
 
 num_of_agents = 10
-num_of_iterations = 100
-neighbourhood = 30
+num_of_iterations = 50
+neighbourhood = 50
 
 
 # Defining the ABM's window size for animation, and variabe axes:
@@ -62,10 +63,11 @@ fig = matplotlib.pyplot.figure(figsize=(7,7))
 ax= fig.add_axes([0,0,1,1])
 
 
-# Reading in the environmental data containing CSV and running it, and then closing once reached the end:
+# Reading in the environmental data containing CSV and running it:
 
 f =open('in.txt', newline='') 
 reader=csv.reader (f, quoting = csv.QUOTE_NONNUMERIC)
+
 
 # Appending environment CSV into rows:
 
@@ -76,8 +78,7 @@ for row in reader:
     environment.append(rowlist)
 
 
-
-# Creating the agents, and appending coordinates to the list to plot their initial locations: 
+# Creating the agents, and appending coordinates to the list to plot their initial locations within the environment: 
 
 for i in range(num_of_agents):
     agents.append(agentframework.Agent(environment, agents, neighbourhood))
@@ -112,10 +113,10 @@ def gen_function(b = [0]):
         yield a		
         a = a + 1
 
+
 # Animating the ABM within the environment, and displaying agent movements: 
         
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
-
 #matplotlib.pyplot.show()  
 
 
@@ -127,7 +128,6 @@ def run():
     
 # Building the animation's main window to display the environment:
     
-
 root = tkinter.Tk() 
 root.wm_title("Model")
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
@@ -139,14 +139,12 @@ menu_bar.add_cascade(label="Model", menu=model_menu)
 model_menu.add_command(label="Run model", command=run) 
 
 
-
-
 # Provide the GUI waiting time:
 
 tkinter.mainloop()
 
 
-# Writing the new environment output into a csv file:
+# Writing the new environment output into a csv file and closing when finished:
 
 f2= open ('environmentdataoutput.csv', 'w', newline= '')
 writer = csv.writer (f2, delimiter = '')
