@@ -52,13 +52,13 @@ agents = []
 # Defining model parameters such as number of agents, iterations, and neighbourhoods:
 
 num_of_agents = 10
-num_of_iterations = 1
+num_of_iterations = 100
 neighbourhood = 30
 
 
 # Defining the ABM's window size for animation, and variabe axes:
 
-fig = matplotlib.pyplot.figure(figsize=(15,15))
+fig = matplotlib.pyplot.figure(figsize=(7,7))
 ax= fig.add_axes([0,0,1,1])
 
 
@@ -74,7 +74,7 @@ for row in reader:
     for item in row:
         rowlist.append(item) 	
     environment.append(rowlist)
-f.close()
+
 
 
 # Creating the agents, and appending coordinates to the list to plot their initial locations: 
@@ -116,7 +116,7 @@ def gen_function(b = [0]):
         
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
 
-matplotlib.pyplot.show()  
+#matplotlib.pyplot.show()  
 
 
 # Creating a Graphical User Interface (GUI) to display the model:
@@ -124,13 +124,21 @@ matplotlib.pyplot.show()
 def run():
     animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
     canvas.show()
-
+    
 # Building the animation's main window to display the environment:
     
+
 root = tkinter.Tk() 
 root.wm_title("Model")
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
 canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+menu_bar = tkinter.Menu(root)
+root.config(menu=menu_bar)
+model_menu = tkinter.Menu(menu_bar)
+menu_bar.add_cascade(label="Model", menu=model_menu)
+model_menu.add_command(label="Run model", command=run) 
+
+
 
 
 # Provide the GUI waiting time:
@@ -138,10 +146,10 @@ canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 tkinter.mainloop()
 
 
-# Writing the new environment to a csv file 
+# Writing the new environment output into a csv file:
 
-f2= open ('dataout.csv', 'w', newline= '')
-writer = csv.writer (f2, delimiter = ' ')
+f2= open ('environmentdataoutput.csv', 'w', newline= '')
+writer = csv.writer (f2, delimiter = '')
 for row in environment:
     writer.writerow(row)
 f2.close
