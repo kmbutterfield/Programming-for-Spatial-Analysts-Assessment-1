@@ -9,8 +9,7 @@ Programming for Geographical Information Analysts: Core Skills
 Module taught for MA Social Research Methods (Interdisciplinary)
 Module taught by Dr. Andy Evans, University of Leeds.
 
-The ABM contains the three key code elements; model code, agent code, 
-and environment code.
+The ABM contains the three key code elements; model code, agent code, and environment code.
  
 """
 
@@ -50,19 +49,17 @@ environment = []
 agents = []
 
 
-# Defining model parameters such as number of agents, iterations, and 
-# neighbourhoods:
+# Defining model parameters such as number of agents, iterations, and neighbourhoods:
 
-num_of_agents = 25
-num_of_iterations = 500
-neighbourhood = 75
+num_of_agents = 10
+num_of_iterations = 100
+neighbourhood = 50
 
 
 # Defining the ABM's window size for animation, and variabe axes:
 
-fig = matplotlib.pyplot.figure(figsize=(7, 7))
+fig = matplotlib.pyplot.figure(figsize=(8,8))
 ax= fig.add_axes([0,0,1,1])
-ax.set_autoscale_on(False)
 
 
 # Reading in the environmental data containing CSV and running it:
@@ -80,27 +77,21 @@ for row in reader:
     environment.append(rowlist)
 
 
-# Creating the agents, and appending coordinates to the list to plot their 
-# initial locations within the environment: 
+# Creating the agents, and appending coordinates to the list to plot their initial locations within the environment: 
 
 for i in range(num_of_agents):
-    y = int(td_ys[i].text)
-    x = int(td_xs[i].text)
-    agents.append(agentframework.Agent(environment, agents, neighbourhood, y, x))
+    agents.append(agentframework.Agent(environment, agents, neighbourhood))
 
 
 # Function to display the movement of agents as an animation:
     
+carry_on = True
 matplotlib.pyplot.xlim(0, 99)
 matplotlib.pyplot.ylim(0, 99)
-
-carry_on = True
-
         
 def update(frame_number):
-    
    fig.clear()
-   global carry_on 
+   global carry_on #CHECK THIS
     
 
 # Plot the agent locations:
@@ -113,9 +104,6 @@ def update(frame_number):
         matplotlib.pyplot.scatter(agents[i].x,agents[i].y)
         matplotlib.pyplot.imshow(environment)    
         
-        
-# When the sheep have at least
-
 def gen_function(b = [0]):
     a = 0
     global carry_on
@@ -126,19 +114,18 @@ def gen_function(b = [0]):
 
 # Animating the ABM within the environment, and displaying agent movements: 
         
-animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
-
+animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
 matplotlib.pyplot.show()  
 
 
 # Creating a Graphical User Interface (GUI) to display the model:
 
-#def run():
-#    animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
-#    canvas.show()
+def run():
+    animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
+    canvas.show()
     
 # Building the animation's main window to display the environment:
-""" 
+    
 root = tkinter.Tk() 
 root.wm_title("Model")
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
@@ -154,21 +141,12 @@ model_menu.add_command(label="Run model", command=run)
 # Provide the GUI waiting time:
 
 tkinter.mainloop()
-"""
-
-
-
-
-
-
-
-
 
 
 # Writing the new environment output into a csv file and closing when finished:
 
 f2= open ('environmentdataoutput.csv', 'w', newline= '')
-writer = csv.writer (f2, delimiter = ' ')
+writer = csv.writer (f2, delimiter = '')
 for row in environment:
     writer.writerow(row)
 f2.close

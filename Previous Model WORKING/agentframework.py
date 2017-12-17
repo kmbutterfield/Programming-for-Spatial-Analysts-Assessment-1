@@ -21,22 +21,16 @@ import random
 # Defining the class for the agents within the environment:
 
 class Agent ():
-    def __init__(self, environment, agents, neighbourhood, y, x):
-        self.x = random.randint (0,len(environment))
-        self.y = random.randint (0,len(environment))
-        if (x == None):
-            self._x = random.randint(0,100)
-        else:
-            self._x = x
+    def __init__(self, environment, agents, neighbourhood):
+        self.x = random.randint (0,99)
+        self.y = random.randint (0,99)
         self.environment = environment
         self.agents = agents
         self.store = 0 
         self.neighbourhood = neighbourhood
 
         
-# Moving the agents in the environment; division % constrains the agents 
-# within the environment's perimeter. If one or more of the agents are found 
-# out of range, it will arrive on the parralel side.
+# Moving the agents in the environment; division % constrains the agents within the environment's perimeter. If one or more of the agents are found out of range, it will arrive on the parralel side; this is a known as a torus.
     
     def move(self):
         if random.random() < 0.5:
@@ -50,8 +44,7 @@ class Agent ():
             self.y = (self.y - 1) % len(self.environment)
             
             
-# Agents eat a patch in the position they were stood, but when they move, 
-# they also lost one store:
+# Agents eat a patch in the position they were stood, but when they move, they also lost one store:
             
     def eat(self):
         if self.environment[self.y][self.x] > 10:
@@ -59,24 +52,14 @@ class Agent ():
             self.store += 10
             
             
-# The agents can now eat what is leftover in that position within the 
-# environment (if the number is under ten), adding to their stores:            
-        elif self.environment[self.y][self.x] > 10:
-            self.environment[self.y][self.x] -=10
-            self.store +=10
-            
-            
-# If an agent reaches a store capacity of >1000, the agent will vomit 1000 of 
-# its stores where it is stood:
+# If an agent reaches a store capacity of >1000, the agent will vomit 1000 of its stores where it is stood:
     def vomit(self):
         if self.store >=1000:
             self.environment[self.y][self.x] +=1000
             self.store = self.store-1000
 
             
-# Agents have neighbours which they share their food stores with if they are 
-# near them. If they fall within a distance of a neighbourhood, change both 
-# the agent and its neighbour's store to an average number:
+# Agents have neighbours which they share their food stores with if they are close to them. If they fall within a distance of a neighbourhood, change both the agent and its neighbour's store to an average number:
             
     def share_with_neighbours(self, neighbourhood):
         for agent in self.agents:
@@ -86,12 +69,12 @@ class Agent ():
                 ave = sum /2
                 self.store = ave
                 agent.store = ave
-               #print("sharing " + str(dist) + " " + str(ave))
+                print("sharing " + str(dist) + " " + str(ave))
                 
 
 # Pythagoras code for calculating distance between the two agent coordinates:
                 
-    def distance_between(self, agent):
-        return (((self.x - agent.x)**2) + ((self.y - agent.y)**2))**0.5
+    def distance_between(agent0, agent1):
+        return (((agent0.x-agent1.x)**2)+((agent0.y-agent1.y)**2))**0.5
     
     
