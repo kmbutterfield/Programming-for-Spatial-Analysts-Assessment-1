@@ -16,8 +16,8 @@ and environment code.
 
 # Import the modules required for model creation:
 
+import matplotlib.backends.backend_tkagg
 import matplotlib
-matplotlib.use ('TkAgg')
 import matplotlib.pyplot
 import matplotlib.animation
 import tkinter
@@ -60,7 +60,7 @@ neighbourhood = 75
 
 # Defining the ABM's window size for animation, and variabe axes:
 
-fig = matplotlib.pyplot.figure(figsize=(7, 7))
+fig = matplotlib.pyplot.figure(figsize=(10, 10))
 ax= fig.add_axes([0,0,1,1])
 ax.set_autoscale_on(False)
 
@@ -126,43 +126,43 @@ def gen_function(b = [0]):
 
 # Animating the ABM within the environment, and displaying agent movements: 
         
-animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
+#animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
 
-matplotlib.pyplot.show()  
+#matplotlib.pyplot.show()  
 
-
+   
 # Creating a Graphical User Interface (GUI) to display the model:
 
-#def run():
-#    animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
-#    canvas.show()
+def run():
+    animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
+    canvas.show()
     
-# Building the animation's main window to display the environment:
-""" 
-root = tkinter.Tk() 
-root.wm_title("Model")
+def quit():
+    root.destroy()
+    
+root = tkinter.Tk()
+    
+c = tkinter.Canvas(root, width=200, height=200)
+#c.pack()	# Layout
+root.wm_title("Agents Eating Environment Agent-Based Model")
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
-canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)    
+
+# Create a toplevel menu:
 
 menu_bar = tkinter.Menu(root)
+
+# Display the menu:
+
 root.config(menu=menu_bar)
 model_menu = tkinter.Menu(menu_bar)
-menu_bar.add_cascade(label="Model", menu=model_menu)
-model_menu.add_command(label="Run model", command=run) 
+menu_bar.add_command(label="Run Model", command=run)
+menu_bar.add_command(label="Close Animation", command=quit)
 
 
-# Provide the GUI waiting time:
+# Setting up the window system for user interactions: 
 
 tkinter.mainloop()
-"""
-
-
-
-
-
-
-
-
 
 
 # Writing the new environment output into a csv file and closing when finished:
